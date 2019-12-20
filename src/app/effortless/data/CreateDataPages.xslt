@@ -74,7 +74,7 @@ export class <xsl:value-of select="$od/PluralName" />Component extends Effortles
   }
 
   reload(self: this) {
-    self.data.reload<xsl:value-of select="$od/PluralName" />(self.gds.smqUser);
+    self.data.reload<xsl:value-of select="$od/PluralName" />(self.gds.smqUser || self.gds.smqGuest);
   }
 
   goTo<xsl:value-of select="$od/Name" />(id) {
@@ -105,7 +105,7 @@ export class <xsl:value-of select="$od/PluralName" />Component extends Effortles
   add<xsl:value-of select="$od/Name" />(<xsl:value-of select="translate($od/Name, $ucletters, $lcletters)" />ToAdd) {
     var payload = this.gds.createPayload();
     payload.<xsl:value-of select="$od/Name" /> = <xsl:value-of select="translate($od/Name, $ucletters, $lcletters)" />ToAdd;
-    this.gds.smqUser.Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
+    (this.gds.smqUser || self.gds.smqGuest).Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
       if (reply.ErrorMessage) {
         alert(reply.ErrorMessage)
       } else {
@@ -262,7 +262,7 @@ export class <xsl:value-of select="$od/Name" />Component extends EffortlessCompo
   save() {
     var payload = this.gds.createPayload();
     payload.<xsl:value-of select="$od/Name" /> = this.editor.getValue();
-    this.gds.smqUser.Update<xsl:value-of select="$od/Name" />(payload)
+    (this.gds.smqUser || self.gds.smqGuest).Update<xsl:value-of select="$od/Name" />(payload)
         .then(reply => {
           this.<xsl:value-of select="translate($od/Name, $ucletters, $lcletters)" />  = reply.<xsl:value-of select="$od/Name" />;
           if (reply.ErrorMessage) {
@@ -283,7 +283,7 @@ export class <xsl:value-of select="$od/Name" />Component extends EffortlessCompo
 
   reload(self: this) {
     self.loading = true;
-    self.data.reload<xsl:value-of select="$od/Name" />Where(self.gds.smqUser, "RECORD_ID()='" + self.id + "'");
+    self.data.reload<xsl:value-of select="$od/Name" />Where(self.gds.smqUser || self.gds.smqGuest, "RECORD_ID()='" + self.id + "'");
   }
 
   goBack() {
@@ -462,7 +462,7 @@ export class <xsl:value-of select="$od/Name" />DialogComponent implements OnInit
   add<xsl:value-of select="$od/Name" />() {
     var payload = this.gds.createPayload();
     payload.<xsl:value-of select="$od/Name" /> = this.editor.getValue();
-    this.gds.smqUser.Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
+    (this.gds.smqUser || self.gds.smqGuest).Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
       if (reply.ErrorMessage) {
         alert(reply.ErrorMessage)
       } else {
