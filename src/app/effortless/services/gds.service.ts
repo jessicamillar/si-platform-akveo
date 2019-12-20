@@ -1,7 +1,7 @@
 declare var generateAdminActor: any;
+declare var generateCustomerActor: any;
+declare var generateUserActor: any;
 declare var generateEmployeeActor: any;
-declare var generateCallerActor: any;
-declare var generatePayrollActor: any;
 
 
 import { Injectable, ɵConsole } from '@angular/core';
@@ -18,7 +18,7 @@ export class GDS {
   dontConnect() {
     this.readiness$.next({});
   }
- 
+
 
   public menu: NbMenuService;
   public smqPassword: string;
@@ -46,7 +46,7 @@ export class GDS {
   public timers: Subscription[] = [];
   private readiness$: BehaviorSubject<{}> = new BehaviorSubject(null);
 
-  public onReady(): Observable<any> {    
+  public onReady(): Observable<any> {
     return this.readiness$
       .pipe(
         filter(value => !!value),
@@ -84,8 +84,10 @@ export class GDS {
   connect() {
     console.log("LOADING ALL DATA");
     var gds = this;
-    if (!gds.whoAmI || !gds.whoAmI.Role) {
-      alert('ERROR AUTHENTICATING');
+    var currentRolesAssigned = gds.whoAmI ? gds.whoAmI.Role : [];
+
+    if (!gds.whoAmI || !currentRolesAssigned) {
+      console.error('ERROR AUTHENTICATING - WHOAMI: ', gds.whoAmI);
       return;
     }
     gds.isAdmin = false;
@@ -93,18 +95,26 @@ export class GDS {
     gds.isPayroll = false;
 
 
-    if (gds.whoAmI.Role.indexOf("Employee") >= 0) {
-      gds.role = 'Employee';
-      gds.isEmployee = true;
-      //gds.smqPayroll = generatePayrollActor();
-      gds.smqUser = generateEmployeeActor();
-    }
-    else if (gds.whoAmI.Role.indexOf("Admin") >= 0) {
+    if (currentRolesAssigned.indexOf("Admin") >= 0) {
       gds.role = 'Admin';
       gds.isAdmin = true;
-      //gds.smqPayroll = generatePayrollActor();
       gds.smqUser = generateAdminActor();
+    } else if (currentRolesAssigned.indexOf("Employee") >= 0) {
+      gds.role = 'Employee';
+      gds.isEmployee = true;
+      gds.smqUser = generateEmployeeActor();
     }
+    else if (currentRolesAssigned.indexOf("Customer") >= 0) {
+      gds.role = 'Customer';
+      gds.isEmployee = true;
+      gds.smqUser = generateCustomerActor();
+    }
+    else if (currentRolesAssigned.indexOf("User") >= 0) {
+      gds.role = 'User';
+      gds.isEmployee = true;
+      gds.smqUser = generateUserActor();
+    }
+
 
     if (gds.smqPayroll) {
       gds.smqPayroll.rabbitEndpoint = gds.rabbitEndpoint;
@@ -120,12 +130,12 @@ export class GDS {
       gds.readiness$.next({});
     });
 
-    gds.smqUser.createPayload = gds.smqUser.createPayload || function() {
-      return { "AccessToken": gds.smqUser.accessToken || gds.accessToken};
+    gds.smqUser.createPayload = gds.smqUser.createPayload || function () {
+      return { "AccessToken": gds.smqUser.accessToken || gds.accessToken };
     };
   }
 }
 
 /*
-   
+
         */
