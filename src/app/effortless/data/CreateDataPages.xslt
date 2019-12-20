@@ -105,7 +105,7 @@ export class <xsl:value-of select="$od/PluralName" />Component extends Effortles
   add<xsl:value-of select="$od/Name" />(<xsl:value-of select="translate($od/Name, $ucletters, $lcletters)" />ToAdd) {
     var payload = this.gds.createPayload();
     payload.<xsl:value-of select="$od/Name" /> = <xsl:value-of select="translate($od/Name, $ucletters, $lcletters)" />ToAdd;
-    (this.gds.smqUser || self.gds.smqGuest).Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
+    (this.gds.smqUser || this.gds.smqGuest).Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
       if (reply.ErrorMessage) {
         alert(reply.ErrorMessage)
       } else {
