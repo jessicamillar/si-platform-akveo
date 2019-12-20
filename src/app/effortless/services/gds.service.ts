@@ -84,8 +84,10 @@ export class GDS {
   connect() {
     console.log("LOADING ALL DATA");
     var gds = this;
-    if (!gds.whoAmI || !gds.whoAmI.Role) {
-      alert('ERROR AUTHENTICATING');
+    var currentRolesAssigned = gds.whoAmI ? gds.whoAmI.Role : [];
+
+    if (!gds.whoAmI || !currentRolesAssigned) {
+      console.error('ERROR AUTHENTICATING - WHOAMI: ', gds.whoAmI);
       return;
     }
     gds.isAdmin = false;
@@ -93,21 +95,21 @@ export class GDS {
     gds.isPayroll = false;
 
 
-    if (gds.whoAmI.Role.indexOf("Admin") >= 0) {
+    if (currentRolesAssigned.indexOf("Admin") >= 0) {
       gds.role = 'Admin';
       gds.isAdmin = true;
       gds.smqUser = generateAdminActor();
-    } else if (gds.whoAmI.Role.indexOf("Employee") >= 0) {
+    } else if (currentRolesAssigned.indexOf("Employee") >= 0) {
       gds.role = 'Employee';
       gds.isEmployee = true;
       gds.smqUser = generateEmployeeActor();
     }
-    else if (gds.whoAmI.Role.indexOf("Customer") >= 0) {
+    else if (currentRolesAssigned.indexOf("Customer") >= 0) {
       gds.role = 'Customer';
       gds.isEmployee = true;
       gds.smqUser = generateCustomerActor();
     }
-    else if (gds.whoAmI.Role.indexOf("User") >= 0) {
+    else if (currentRolesAssigned.indexOf("User") >= 0) {
       gds.role = 'User';
       gds.isEmployee = true;
       gds.smqUser = generateUserActor();
