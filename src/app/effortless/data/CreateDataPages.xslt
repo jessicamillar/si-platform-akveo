@@ -262,7 +262,7 @@ export class <xsl:value-of select="$od/Name" />Component extends EffortlessCompo
   save() {
     var payload = this.gds.createPayload();
     payload.<xsl:value-of select="$od/Name" /> = this.editor.getValue();
-    (this.gds.smqUser || self.gds.smqGuest).Update<xsl:value-of select="$od/Name" />(payload)
+    (this.gds.smqUser || this.gds.smqGuest).Update<xsl:value-of select="$od/Name" />(payload)
         .then(reply => {
           this.<xsl:value-of select="translate($od/Name, $ucletters, $lcletters)" />  = reply.<xsl:value-of select="$od/Name" />;
           if (reply.ErrorMessage) {
@@ -462,7 +462,7 @@ export class <xsl:value-of select="$od/Name" />DialogComponent implements OnInit
   add<xsl:value-of select="$od/Name" />() {
     var payload = this.gds.createPayload();
     payload.<xsl:value-of select="$od/Name" /> = this.editor.getValue();
-    (this.gds.smqUser || self.gds.smqGuest).Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
+    (this.gds.smqUser || this.gds.smqGuest).Add<xsl:value-of select="$od/Name" />(payload).then((reply) => {
       if (reply.ErrorMessage) {
         alert(reply.ErrorMessage)
       } else {
