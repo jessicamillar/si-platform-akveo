@@ -217,71 +217,7 @@ function generateGuestActor() {
             var id = smqGuest.createUUID();
             var deferred = smqGuest.waitingReply[id] = smqGuest.defer();
             if (smqGuest.showPingPongs) console.log('Store Temp File - ');
-            smqGuest.client.send('/exchange/guestmic/crudcoordinator.general.guest.storetempfile', { "content-type": "text/plain", "reply-to":"/temp-queue/response-queue", "correlation-id":id }, payload);
-            
-            smqGuest.waitFor(id);
-            
-            return deferred.promise;
-        }
-        
-        smqGuest.GetNetworks = function() {
-            smqGuest.GetNetworks('{}');
-        }
-
-        smqGuest.GetNetworks = function(payload) {
-            payload = smqGuest.stringifyValue(payload);
-            var id = smqGuest.createUUID();
-            var deferred = smqGuest.waitingReply[id] = smqGuest.defer();
-            if (smqGuest.showPingPongs) console.log('Get Networks - ');
-            smqGuest.client.send('/exchange/guestmic/crudcoordinator.general.guest.getnetworks', { "content-type": "text/plain", "reply-to":"/temp-queue/response-queue", "correlation-id":id }, payload);
-            
-            smqGuest.waitFor(id);
-            
-            return deferred.promise;
-        }
-        
-        smqGuest.GetNetworkById = function() {
-            smqGuest.GetNetworkById('{}');
-        }
-
-        smqGuest.GetNetworkById = function(payload) {
-            payload = smqGuest.stringifyValue(payload);
-            var id = smqGuest.createUUID();
-            var deferred = smqGuest.waitingReply[id] = smqGuest.defer();
-            if (smqGuest.showPingPongs) console.log('Get Network By Id - ');
-            smqGuest.client.send('/exchange/guestmic/crudcoordinator.general.guest.getnetworkbyid', { "content-type": "text/plain", "reply-to":"/temp-queue/response-queue", "correlation-id":id }, payload);
-            
-            smqGuest.waitFor(id);
-            
-            return deferred.promise;
-        }
-        
-        smqGuest.GetShows = function() {
-            smqGuest.GetShows('{}');
-        }
-
-        smqGuest.GetShows = function(payload) {
-            payload = smqGuest.stringifyValue(payload);
-            var id = smqGuest.createUUID();
-            var deferred = smqGuest.waitingReply[id] = smqGuest.defer();
-            if (smqGuest.showPingPongs) console.log('Get Shows - ');
-            smqGuest.client.send('/exchange/guestmic/crudcoordinator.general.guest.getshows', { "content-type": "text/plain", "reply-to":"/temp-queue/response-queue", "correlation-id":id }, payload);
-            
-            smqGuest.waitFor(id);
-            
-            return deferred.promise;
-        }
-        
-        smqGuest.GetShowById = function() {
-            smqGuest.GetShowById('{}');
-        }
-
-        smqGuest.GetShowById = function(payload) {
-            payload = smqGuest.stringifyValue(payload);
-            var id = smqGuest.createUUID();
-            var deferred = smqGuest.waitingReply[id] = smqGuest.defer();
-            if (smqGuest.showPingPongs) console.log('Get Show By Id - ');
-            smqGuest.client.send('/exchange/guestmic/crudcoordinator.general.guest.getshowbyid', { "content-type": "text/plain", "reply-to":"/temp-queue/response-queue", "correlation-id":id }, payload);
+            smqGuest.client.send('/exchange/guestmic/crudcoordinator.utlity.guest.storetempfile', { "content-type": "text/plain", "reply-to":"/temp-queue/response-queue", "correlation-id":id }, payload);
             
             smqGuest.waitFor(id);
             
